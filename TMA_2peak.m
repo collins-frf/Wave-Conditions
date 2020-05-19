@@ -1,4 +1,4 @@
-function [freq, alpha, spec] = TMA_2peak(fmin,fmax,df,FM1,gam1,Hs1,nn1,theta1,FM2,gam2,Hs2,nn2,theta2)
+function [freq, direction, spec1] = TMA_2peak(fmin,fmax,df,FM1,gam1,Hs1,nn1,theta1,FM2,gam2,Hs2,nn2,theta2)
 %
 %fmin = minimum spectral freuency
 %fmax = maximum spectral frequency
@@ -17,12 +17,12 @@ hm1 = 500; hm2=hm1;
 freq = [fmin:df:fmax];
 NF = length(freq);
 da = 5; % hardwired to 5 deg resolution in STWAVE
-alpha = [-90:da:90]'; % hardwired in STWAVE
-NA = length(alpha); 
+direction = [0:da:(theta1+90)]'; % hardwired in STWAVE
+NA = length(direction); 
 
 %calculate the TMA spectrum
 f = repmat(freq,NA,1);
-a = repmat(alpha,1,NF);
+a = repmat(direction,1,NF);
 omh1 = 2*pi*sqrt(hm1/9.8)*f;
 if omh1<1
   phi1 = 0.5*(omh1.^2);
@@ -60,9 +60,11 @@ normSpec2 = sum(spec2(:))*df*da/(Hs2^2/16);
 spec2 = spec2/normSpec2;
 spec=(spec1+spec2);
 
+save("TMA_out")
+
 subplot(1,3,1)
 sgtitle("Hs = " + Hs1 + "m, Dir = " + theta1 + "*, F = " + FM1 + "Hz");
-s = pcolor(freq, alpha, spec1);
+s = pcolor(freq, direction, spec1);
 scb = colorbar;
 title('2D Wave Spectra');
 xlabel('Frequency (Hz)');
@@ -79,9 +81,9 @@ ylabel('Avg. Wave Energy');
 
 spec_dir_mean = mean(spec1,2);
 subplot(1,3,3)
-s = plot(alpha, spec_dir_mean);
+s = plot(direction, spec_dir_mean);
 title('Avg. Wave Energy at each Direction');
-xlabel('Direction (Hz)');
+xlabel('Direction (*)');
 ylabel('Avg. Wave Energy');
 
 

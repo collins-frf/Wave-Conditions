@@ -81,7 +81,7 @@ for jj=1:length(Hpx)
       'Color','k','FontSize',8,'FontWeight','bold',...
       'BackgroundColor','w');
 end
-h = plot(Hpx,Hpy,'k.','MarkerSize',8)
+h = plot(Hpx,Hpy,'k.','MarkerSize',8);
 caxis([0 7.5])
 
 hcb = colorbar('EastOutside');
@@ -90,7 +90,7 @@ set(hcb,'Position',[p(1)+.05 p(2)+.1 .015 p(4)-.2],'FontSize',8)
 set(get(hcb,'YLabel'),'String','% occurence','FontSize',10)
 
 set(gca,'DefaultTextUnits','normalized')
-title = ['Buoy Number: ' waves.buoy '; ' datestr(waves.stdmet.time(1), 'mm/dd/yyyy') ' to ' datestr(waves.stdmet.time(end), 'mm/dd/yyyy') '']
+title = ['Buoy Number: ' waves.buoy '; ' datestr(waves.stdmet.time(1), 'mm/dd/yyyy') ' to ' datestr(waves.stdmet.time(end), 'mm/dd/yyyy') ''];
 text(.5,1.02,title,'FontSize',16,...
    'HorizontalAlignment','center')
 %% Get the means in each bin.
@@ -107,28 +107,28 @@ for ii=1:length(Hbins)-1
          id = find(B.H>=Hbins(ii) & B.H<Hbins(ii+1) & ...
             B.D>=Dbinso(jj) & B.D<Dbinso(jj+1));
       end
-      stats(n).Hbin = Hbins(ii:ii+1);
-      stats(n).Dbin = Dbinso(jj:jj+1);
-      stats(n).percent = length(id)/N*100;
-      stats(n).num = length(id);
-      stats(n).H = nanmean(B.H(id));
-      stats(n).Hstd = nanstd(B.H(id));
-      stats(n).Hmax=max(B.H(id));
-      stats(n).Hmin=min(B.H(id));
-      stats(n).D = nanmean(B.D(id));
-      stats(n).Dstd = nanstd(B.D(id));
-      stats(n).T = nanmean(B.T(id));
-      stats(n).Tstd = nanstd(B.T(id));
-      stats(n).Tmax = max(B.T(id));
-      stats(n).Tmin = min(B.T(id));
-      stats(n).ws = nanmean(B.ws(id));
-      stats(n).wsstd = nanstd(B.ws(id));
-      stats(n).wd = nanmean(B.wd(id));
-      stats(n).wdstd = nanstd(B.wd(id));
+      statsTp(n).Hbin = Hbins(ii:ii+1);
+      statsTp(n).Dbin = Dbinso(jj:jj+1);
+      statsTp(n).percent = length(id)/N*100;
+      statsTp(n).num = length(id);
+      statsTp(n).H = nanmean(B.H(id));
+      statsTp(n).Hstd = nanstd(B.H(id));
+      statsTp(n).Hmax=max(B.H(id));
+      statsTp(n).Hmin=min(B.H(id));
+      statsTp(n).D = nanmean(B.D(id));
+      statsTp(n).Dstd = nanstd(B.D(id));
+      statsTp(n).T = nanmean(B.T(id));
+      statsTp(n).Tstd = nanstd(B.T(id));
+      statsTp(n).Tmax = max(B.T(id));
+      statsTp(n).Tmin = min(B.T(id));
+      statsTp(n).ws = nanmean(B.ws(id));
+      statsTp(n).wsstd = nanstd(B.ws(id));
+      statsTp(n).wd = nanmean(B.wd(id));
+      statsTp(n).wdstd = nanstd(B.wd(id));
       n = n + 1;
-      save(stats)
+      save("statsTp")
    end
 end
 
-outname = ['wave_climatology_' waves.buoy '.mat']
-save(outname, 'stats')
+outname = ['wave_climatology_' waves.buoy '.mat'];
+save(outname, 'statsTp')
